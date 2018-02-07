@@ -1,1 +1,1 @@
-ifconfig | awk '{print $1, $2}' | grep flags | awk '{print $1}' | sed s/://g
+ifconfig | grep ": f" | sed "s/:.*//g"
