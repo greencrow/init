@@ -1,13 +1,24 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    01                                                 :+:      :+:    :+:    #
+#    04                                                 :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: svigouro <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/02/12 15:13:10 by svigouro          #+#    #+#              #
-#    Updated: 2018/02/12 15:13:38 by svigouro         ###   ########.fr        #
+#    Created: 2018/02/14 13:05:59 by svigouro          #+#    #+#              #
+#    Updated: 2018/02/14 13:12:43 by svigouro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-cat /etc/passwd | cut -d : -f1,3,6
+FILE=/etc/crontab
+FILE2=/home/root/md5key
+
+if [ -f "$FILE2" ]; then
+	if [ "$(md5sum $FILE)" != "$(cat $FILE2)" ]; then
+		`mail -s "FILE /etc/crontab has been modified" root@debian < /dev/null`
+		`md5sum "$FILE" > "$FILE2"`
+	fi
+else
+	`touch "$FILE2"`
+	`md5sum "$FILE" >> "$FILE2"`
+fi
